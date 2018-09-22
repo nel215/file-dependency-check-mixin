@@ -28,7 +28,11 @@ class FileDependencyCheckMixin():
         def mtime(path):
             return time.gmtime(os.path.getmtime(path))
 
-        ctime = mtime(self.output().path)
+        out_path = self.output().path
+        if not os.path.exists(out_path):
+            return False
+
+        ctime = mtime(out_path)
 
         for path in path_list:
             if mtime(path) > ctime:
